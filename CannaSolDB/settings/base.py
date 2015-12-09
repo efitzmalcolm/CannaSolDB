@@ -14,6 +14,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'CannaSolDB.apps.retailers'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -26,7 +27,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = '.urls'
+ROOT_URLCONF = 'CannaSolDB.urls'
 
 WSGI_APPLICATION = '.wsgi.application'
 
