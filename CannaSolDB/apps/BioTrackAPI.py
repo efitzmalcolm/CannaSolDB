@@ -1,6 +1,7 @@
 import os
 import csv
 import requests
+from CannaSolDB.apps.retailers.models import Retailer
 
 
 URL = 'https://wslcb.mjtraceability.com/serverjson.asp'
@@ -25,4 +26,20 @@ def login():
     if response['success']:
         return response['sessionid']
     else:
-        raise ValueError('Error: %s' % response['error'])
+        raise ValueError('%(error)s' % response)
+
+
+def syncVendors(transaction_start=Retailer.objects.latest('transactionid').values('transactionid')):
+    action = 'sync_vendor'
+    payload = {
+        'API': API_VERSION,
+        'action': action,
+        'sessionid': login(),
+        'transacton_start': transaction_start,
+        }
+    response = requests.post(URL, json=payload, headers=headers).json()
+
+    if response['success']:
+        return response
+    else:
+        raise ValueError('%(error)s' % response)
