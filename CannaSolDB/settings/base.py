@@ -14,7 +14,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'CannaSolDB.apps.retailers'
+    'CannaSolDB.apps.vendors',
+    'CannaSolDB.apps.transfers',
+    'CannaSolDB.apps.inventory',
 )
 
 MIDDLEWARE_CLASSES = (
