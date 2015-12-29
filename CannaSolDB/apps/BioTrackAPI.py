@@ -35,17 +35,17 @@ def login():
     else:
         raise ValueError('%(error)s' % response)
 
-def syncCheck(table,sum):
+def syncCheck(table,sum,download=True):
     action = 'sync_check'
     payload = {
         'API': API_VERSION,
         'action': action,
         'sessionid': login(),
-        'download': True,
+        'download': download,
         'data': {
             'table': table,
             'sum': sum,
-            'active': False,
+            'active': 0,
             }
         }
     response = requests.post(URL, json=payload, headers=headers).json()
@@ -75,6 +75,7 @@ def syncVendors():
         print('')
         total = 0
         new = 0
+        renamed = 0
         for x in response['vendor']:
             args = {
                 'name' : x['name'],
@@ -95,8 +96,15 @@ def syncVendors():
             if len(x['zip']) > 5:
                 args['zip4'] = x['zip'][5:]
             
+
+            # Handle Name Changes
             try:
-                v = Vendor.objects.get(**args)
+                v = Vendor.objects.get(ubi=args['ubi'], license_number=args['license_number'])
+                if v.name != args['name']:
+                    v.prev_name = v.name
+                    v.name = args['name']
+                    v.save()
+                    renamed = renamed + 1
             except Vendor.DoesNotExist:
                 v = Vendor(**args)
                 v.save()
@@ -106,6 +114,7 @@ def syncVendors():
 
         print('Total Records: %s' % total)
         print('New Records: %s' % new)
+        print('Names Changes: %s' % new)
 
     else:
         print('Already current with State')

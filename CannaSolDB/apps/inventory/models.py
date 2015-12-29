@@ -36,7 +36,10 @@ class Inventory(models.Model):
     net_package = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
-        return self.id
+        if self.productname:
+            return self.barcode + ': ' + self.productname
+        else:
+            return self.barcode
 
     def save(self, *args, **kwargs):
         if not self.created_date:

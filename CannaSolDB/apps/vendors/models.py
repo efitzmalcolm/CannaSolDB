@@ -7,21 +7,28 @@ from geopy.geocoders import GoogleV3
 class Vendor(models.Model):
     created_date = models.DateTimeField(editable=False)
     modified_date = models.DateTimeField(editable=False)
+
     name = models.CharField(max_length=100)
+    prev_name = models.CharField(max_length=100,null=True,blank=True)
+
     address1 = models.CharField(max_length=50)
     address2 = models.CharField(max_length=50,null=True,blank=True)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=2)
     zip5 = models.CharField(max_length=5)
+
     zip4 = models.CharField(max_length=4,null=True,blank=True)
     long = models.CharField(max_length=25,null=True,blank=True)
     lat = models.CharField(max_length=25,null=True,blank=True)
     ubi = models.CharField(max_length=9)
+
     license_number = models.CharField(max_length=25)
     locationtype = models.CharField(max_length=1)
     producer = models.BooleanField()
+
     processor = models.BooleanField()
     retail = models.BooleanField()
+
     transactionid = models.IntegerField()
     transactionid_original = models.IntegerField()
 
